@@ -3,7 +3,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 -- See `:help vim.opt`
@@ -68,13 +68,14 @@ vim.opt.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
 
+-- nvimtree options
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
---vim.keymap.set('n', '-', '<CMD>Oil<CR>', { desc = 'Open parent directory' })
+vim.keymap.set('n', '-', '<CMD>Oil<CR>', { desc = 'Open parent directory' })
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
@@ -118,6 +119,13 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
+function InsertFullPath()
+  local filepath = vim.fn.expand '%:p'
+  vim.fn.setreg('+', filepath) -- write to clippoard
+end
+
+vim.keymap.set('n', '<leader>yf', InsertFullPath, { noremap = true, silent = true })
+
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
@@ -155,7 +163,18 @@ require('lazy').setup({
 
   -- "gc" to comment visual regions/lines
   { 'numToStr/Comment.nvim', opts = {} },
-  -- { 'stevearc/oil.nvim', opts = {}, dependencies = { { 'echasnovski/mini.icons', opts = {} } } },
+  -- {
+  --   'nvim-tree/nvim-tree.lua',
+  --   version = '*',
+  --   lazy = false,
+  --   dependencies = {
+  --     'nvim-tree/nvim-web-devicons',
+  --   },
+  --   config = function()
+  --     require('nvim-tree').setup {}
+  --   end,
+  -- },
+  { 'stevearc/oil.nvim', opts = {}, dependencies = { { 'nvim-tree/nvim-web-devicons', opts = {} } } },
   -- Here is a more advanced example where we pass configuration
   -- options to `gitsigns.nvim`. This is equivalent to the following Lua:
   --    require('gitsigns').setup({ ... })
