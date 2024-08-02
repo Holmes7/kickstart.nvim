@@ -124,7 +124,7 @@ function InsertFullPath()
   vim.fn.setreg('+', filepath) -- write to clippoard
 end
 
-vim.keymap.set('n', '<leader>yf', InsertFullPath, { noremap = true, silent = true })
+vim.keymap.set('n', '<leader>yf', InsertFullPath, { noremap = true, silent = true, desc = 'Copy path of file of current buffer' })
 
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
@@ -505,7 +505,7 @@ require('lazy').setup({
       local servers = {
         -- clangd = {},
         -- gopls = {},
-        -- pyright = {},
+        pyright = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
